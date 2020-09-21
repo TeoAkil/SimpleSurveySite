@@ -11,7 +11,7 @@ echo "If you only want the even number";
 echo "<br>\n";
 for($i = 0; $i < 5; $i++)
 {
-	if ($arr1[$1]%2 == 0)
+	if ($arr1[$i]%2 == 0)
 	{
 		echo "$arr1[$i]";
 		echo "<br>\n";
