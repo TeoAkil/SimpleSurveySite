@@ -63,6 +63,23 @@ if (isset($_POST["saved"])) {
             $newUsername = $username;
         }
     }
+
+    if (isset($_POST["original"])) {
+        $original = $_POST["original"];
+        $stmt = $db->prepare("SELECT password from Users where id = :id");
+        $r = $stmt->execute([":id" => get_user_id()]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result && isset($result["password"])) {
+            $password_hash_from_db = $result["password"];
+            if (!password_verify($original, $password_hash_from_db)) {
+                flash("Incorrect original password");
+                $isValid = false;
+            }
+        }
+    } else {
+        flash("Must provide the original password");
+        $isValid = false;
+    }
     if ($isValid) {
         $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
         $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
@@ -115,6 +132,8 @@ if (isset($_POST["saved"])) {
         <label for="username">Username</label>
         <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
         <!-- DO NOT PRELOAD PASSWORD-->
+        <label for="opw">Original Password</label>
+        <input type="password" name="original"/>
         <label for="pw">Password</label>
         <input type="password" name="password"/>
         <label for="cpw">Confirm Password</label>
