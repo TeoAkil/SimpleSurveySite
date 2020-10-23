@@ -1,9 +1,7 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
     <form method="POST">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" />
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" />
+        <input type="text" id="email" name="email" required/>
         <label for="p1">Password:</label>
         <input type="password" id="p1" name="password" required/>
         <input type="submit" name="login" value="Login"/>
@@ -12,77 +10,64 @@
 <?php
 if (isset($_POST["login"])) {
     $email = null;
-    $username = null;
     $password = null;
     if (isset($_POST["email"])) {
-        $email = $_POST["email"];
-    }
-    if (isset($_POST["username"])) {
-        $username = $_POST["username"];
-    }
-    if (isset($_POST["password"])) {
-        $password = $_POST["password"];
-    }
-    $isValid = true;
+        $email = $_POST["email"]; }
 
-    if (!isset($email) && !isset($username)) {
+    if (isset($_POST["password"])) {
+        $password = $_POST["password"]; }
+        
+    $isValid = true;
+    if (!isset($email)) {
         $isValid = false;
-        flash("Email/username missing");
-    }
+        flash("Email/username missing"); }
 
     if (!isset($password)) {
         $isValid = false;
-        flash("Password missing");
-    }
-    if (!empty($email) && !strpos($email, "@")) {
+        flash("Password is missing"); }
+
+    // the email check is no longer nescessary as people can now enter either email or username into the field
+    /*if (!strpos($email, "@")) {
         $isValid = false;
         //echo "<br>Invalid email<br>";
-        flash("Invalid email");
-    }
+        flash("Invalid email"); } */
+
     if ($isValid) {
         $db = getDB();
         if (isset($db)) {
-            $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE email = :email OR  username = :username LIMIT 1");
-            $params = array(":email" => $email, ":username" => $username);
+            $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE email = :email OR username = :email LIMIT 1");
+            $params = array(":email" => $email);
             $r = $stmt->execute($params);
-            //echo "db returned: " . var_export($r, true);
             $e = $stmt->errorInfo();
             if ($e[0] != "00000") {
-                //echo "uh oh something went wrong: " . var_export($e, true);
-                flash("Something went wrong, please try again");
-            }
+                flash("Something went wrong, please try again");  }
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result && isset($result["password"])) {
                 $password_hash_from_db = $result["password"];
                 if (password_verify($password, $password_hash_from_db)) {
-                    $stmt = $db->prepare("SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id WHERE UserRoles.user_id = :user_id AND Roles.is_active = 1 AND UserRoles.is_active = 1");
+                    $stmt = $db->prepare("
+SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
                     $stmt->execute([":user_id" => $result["id"]]);
                     $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     unset($result["password"]);//remove password so we don't leak it beyond this page
                     //let's create a session for our user based on the other data we pulled from the table
                     $_SESSION["user"] = $result;//we can save the entire result array since we removed password
                     if ($roles) {
-                        $_SESSION["user"]["roles"] = $roles;
-                    }
+                        $_SESSION["user"]["roles"] = $roles; }
                     else {
-                        $_SESSION["user"]["roles"] = [];
-                    }
+                        $_SESSION["user"]["roles"] = []; }
                     //on successful login let's serve-side redirect the user to the home page.
                     flash("Log in successful");
-                    die(header("Location: home.php"));
-                }
+                    die(header("Location: home.php"));  }
                 else {
-                    flash("Invalid password");
-                }
+                    flash("Invalid password"); }
             }
             else {
-                flash("Invalid user");
-            }
+                flash("Invalid user"); }
         }
     }
     else {
-        flash("There was a validation issue");
-    }
+        flash("There was a validation issue"); }
 }
 ?>
 <?php require(__DIR__ . "/partials/flash.php");
