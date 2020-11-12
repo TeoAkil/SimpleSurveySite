@@ -67,6 +67,22 @@ function getMessages() {
     }
     return array();
 }
+function getState($n) {
+    switch ($n) {
+        case 0:
+            echo "Draft";
+            break;
+        case 1:
+            echo "Private";
+            break;
+        case 2:
+            echo "Public";
+            break;
+        default:
+            echo "Unsupported state: " . safer_echo($n);
+            break;
+    }
+}
 
 //end flash
 ?>
