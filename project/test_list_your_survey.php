@@ -5,29 +5,21 @@ if (!has_role("Admin")) {
     flash("You don't have permission to access this page");
     die(header("Location: login.php"));
 }
+//
 ?>
 <?php
-$query = "";
+$sessionid = get_user_id();
 $results = [];
-if (isset($_POST["query"])) {
-    $query = $_POST["query"];
-}
-if (isset($_POST["search"]) && !empty($query)) {
-    $db = getDB();
-    $stmt = $db->prepare("SELECT id,title,description,visibility,created,modified,user_id from Survey WHERE visibility = 2 and title like :q LIMIT 10");
-    $r = $stmt->execute([":q" => "%$query%"]);
-    if ($r) {
+$db = getDB();
+$stmt = $db->prepare("SELECT id,title,description,visibility,created,modified,user_id from Survey WHERE user_id like :sid LIMIT 10");
+$r = $stmt->execute([":sid" => "$sessionid"]);
+if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    else {
+else {
         flash("There was a problem fetching the results");
     }
-}
 ?>
-<form method="POST">
-    <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
-    <input type="submit" value="Search" name="search"/>
-</form>
 <div class="results">
     <?php if (count($results) > 0): ?>
         <div class="list-group">
