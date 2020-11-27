@@ -52,6 +52,7 @@ else {
                     <div>
                         <a type="button" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
                         <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View</a>
+			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add Question</a>
                     </div>
                 </div>
             <?php endforeach; ?>
