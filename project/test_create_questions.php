@@ -6,7 +6,12 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 ?>
-
+<?php
+//we'll put this at the top so both php block have access to it
+if (isset($_GET["id"])) {
+    $id = $_GET["id"];
+}
+?>
 <?php
 $db = getDB();
 $stmt = $db->prepare("SELECT id,title from Survey");
@@ -17,13 +22,6 @@ $surveys = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <form method="POST">
         <label>Question</label>
         <input name="question" placeholder="Question"/>
-        <select name="survey_id" value="<?php echo $result["survey_id"];?>">
-            <option value="-1">None</option>
-            <?php foreach ($surveys as $survey): ?>
-                <option value="<?php safer_echo($survey["id"]); ?>"
-                ><?php safer_echo($survey["title"]); ?></option>
-            <?php endforeach; ?>
-        </select>
         <input type="submit" name="save" value="Create"/>
     </form>
     
@@ -31,12 +29,12 @@ $surveys = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
     $question = $_POST["question"];
-    $survey_id = $_POST["survey_id"];
+   // $survey_id = $_POST["survey_id"];
     $db = getDB();
     $stmt = $db->prepare("INSERT INTO Questions (question, survey_id) VALUES(:question, :survey_id)");
     $r = $stmt->execute([
         ":question" => $question,
-        ":survey_id" => $survey_id
+        ":survey_id" => $id
     ]);
     if ($r) {
         flash("Created successfully with id: " . $db->lastInsertId());

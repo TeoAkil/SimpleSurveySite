@@ -29,7 +29,7 @@ if (isset($id)) {
 <?php
 $userid = get_user_id();
 if (($userid != $result["user_id"]) && ($result["visibility"] == 0)) {
-    //this will redirect to login and kill the rest of this script (prevent it from executing)
+    //this will redirect to home and kill the rest of this script (prevent it from executing)
     flash("You don't have permission to access this page, it is a different users survey draft");
     die(header("Location: home.php"));
 }
@@ -45,7 +45,7 @@ if (($userid != $result["user_id"]) && ($result["visibility"] == 0)) {
                 <div>Description: <?php safer_echo($result["description"]); ?></div>
                 <div>Visibility: <?php getState($result["visibility"]); ?></div>
                // <div>Created: <?php safer_echo($result["created"]); ?></div>
-               // <div>Modified: <?php echo($result["visibility"]); ?>
+               // <div>Modified: <?php safer_echo($result["modified"]); ?>
                 </div>
                 <div>Owned by: <?php safer_echo($result["username"]); ?></div>
             </div>
