@@ -7,29 +7,23 @@ if (!has_role("Admin")) {
 }
 ?>
 <?php
-$query = "";
-$results = [];
-//
-if (isset($_POST["query"])) {
-    $query = $_POST["query"];
-}
-if (isset($_POST["search"]) && !empty($query)) {
-    $db = getDB();
-    $stmt = $db->prepare("SELECT quest.id,quest.question,survey.title as survey from Questions as quest LEFT JOIN Survey as survey on quest.survey_id = survey.id WHERE quest.question like :q LIMIT 10");
-    $r = $stmt->execute([":q" => "%$query%"]);
-    if ($r) {
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    else {
-        flash("There was a problem fetching the results " . var_export($stmt->errorInfo(), true));
-    }
+//we'll put this at the top so both php block have access to it
+if (isset($_GET["id"])) {
+    $id = $_GET["id"];
 }
 ?>
-<h3>List Questions</h3>
-<form method="POST">
-    <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
-    <input type="submit" value="Search" name="search"/>
-</form>
+<?php
+$results = [];
+$db = getDB();
+$stmt = $db->prepare("SELECT id,question,survey_id from Questions WHERE survey_id like :sid LIMIT 10");
+$r = $stmt->execute([":sid" => "$id"]);
+if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+else {
+        flash("There was a problem fetching the results");
+    }
+?>
 <div class="results">
     <?php if (count($results) > 0): ?>
         <div class="list-group">
@@ -40,12 +34,11 @@ if (isset($_POST["search"]) && !empty($query)) {
                         <div><?php safer_echo($r["question"]); ?></div>
                     </div>
                     <div>
-                        <div>Survey:</div>
-                        <div><?php safer_echo($r["survey"]); ?></div>
+                        <div>Survey Id:</div>
+                        <div><?php safer_echo($r["survey_id"]); ?></div>
                     </div>
                     <div>
-                        <a type="button" href="test_edit_questions.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
-                        <a type="button" href="test_view_questions.php?id=<?php safer_echo($r['id']); ?>">View</a>
+			<a type="button" href="test_create_answers.php?id=<?php safer_echo($r['id']); ?>">Add Answer</a>
                     </div>
                 </div>
             <?php endforeach; ?>

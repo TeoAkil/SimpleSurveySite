@@ -5,7 +5,6 @@ if (!has_role("Admin")) {
     flash("You don't have permission to access this page");
     die(header("Location: login.php"));
 }
-//
 ?>
 <?php
 $sessionid = get_user_id();
@@ -50,10 +49,8 @@ else {
                         <div><?php safer_echo($r["user_id"]); ?></div>
                     </div>
                     <div>
-                        <a type="button" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit Survey Info</a>
-                        <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View Survey Info</a>
-			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add Question</a>
-			<a type="button" href="test_list_questions.php?id=<?php safer_echo($r['id']); ?>">View/Edit Questions</a>
+                        <a type="button" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
+                        <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View</a>
                     </div>
                 </div>
             <?php endforeach; ?>
