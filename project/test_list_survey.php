@@ -23,6 +23,19 @@ if (isset($_POST["search"]) && !empty($query)) {
         flash("There was a problem fetching the results");
     }
 }
+else
+{
+    $db = getDB();
+    $stmt = $db->prepare("SELECT id,title,description,visibility,created,modified,user_id from Survey WHERE visibility = 2 LIMIT 10");
+    $r = $stmt->execute();
+    if ($r) {
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else {
+        flash("There was a problem fetching the results");
+    }
+	
+}
 ?>
 <form method="POST">
     <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
