@@ -17,7 +17,7 @@ if (isset($_GET["id"])) {
 $result = [];
 if (isset($id)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT Surv.id,title,description,visibility,Surv.created,modified,user_id, Users.username FROM Survey as Surv JOIN Users on Surv.user_id = Users.id where Surv.id = :id");
+    $stmt = $db->prepare("SELECT Surv.id,title,description,visibility,Surv.created,modified,total,user_id, Users.username FROM Survey as Surv JOIN Users on Surv.user_id = Users.id where Surv.id = :id");
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
@@ -45,8 +45,8 @@ if (($userid != $result["user_id"]) && ($result["visibility"] == 0)) {
                 <div>Description: <?php safer_echo($result["description"]); ?></div>
                 <div>Visibility: <?php getState($result["visibility"]); ?></div>
                // <div>Created: <?php safer_echo($result["created"]); ?></div>
-               // <div>Modified: <?php safer_echo($result["modified"]); ?>
-                </div>
+               // <div>Modified: <?php safer_echo($result["modified"]); ?> </div>
+		<div>Times Taken: <?php safer_echo($result["total"]); ?> </div>
                 <div>Owned by: <?php safer_echo($result["username"]); ?></div>
             </div>
         </div>
