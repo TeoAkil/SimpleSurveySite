@@ -11,7 +11,7 @@ if (!has_role("Admin")) {
 $sessionid = get_user_id();
 $results = [];
 $db = getDB();
-$stmt = $db->prepare("SELECT id,title,description,visibility,created,modified,user_id from Survey WHERE user_id like :sid LIMIT 10");
+$stmt = $db->prepare("SELECT id,title,description,visibility,created,modified,total,user_id from Survey WHERE user_id like :sid LIMIT 10");
 $r = $stmt->execute([":sid" => "$sessionid"]);
 if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -45,6 +45,9 @@ else {
                         <div>Modified:</div>
                         <div><?php safer_echo($r["modified"]); ?></div>   
                     </div>
+		    <div>
+			<div>Times Taken: </div>
+			<div><?php safer_echo($r["total"]); ?></div>
                     <div>
                         <div>Owner Id:</div>
                         <div><?php safer_echo($r["user_id"]); ?></div>
