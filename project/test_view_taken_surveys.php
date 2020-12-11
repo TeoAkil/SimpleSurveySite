@@ -11,7 +11,7 @@
 $sessionid = get_user_id();
 $results = [];
 $db = getDB();
-$stmt = $db->prepare("SELECT DISTINCT s.title,s.description,s.id,s.total FROM Survey s JOIN Responses r on s.id = r.survey_id where r.user_id = :sid ");
+$stmt = $db->prepare("SELECT DISTINCT s.title,s.description,s.id,s.total FROM Survey s JOIN Responses r on s.id = r.survey_id where r.user_id = :sid ORDER BY id DESC LIMIT 10 ");
 $r = $stmt->execute([":sid" => "$sessionid"]);
 if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,6 +39,9 @@ else {
                     <div>
                         <div>Survey Id:</div>
                         <div><?php safer_echo($r["id"]); ?></div>
+                    </div>
+		    <div>
+			<a type="button" href="test_results.php?id=<?php safer_echo($r['id']); ?>">Results</a>
                     </div>
                 </div>
             <?php endforeach; ?>

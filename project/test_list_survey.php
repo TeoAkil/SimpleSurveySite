@@ -79,6 +79,7 @@ else
                         <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View</a>
 			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add A Question</a>
 			<a type="button" href="test_take_survey.php?id=<?php safer_echo($r['id']); ?>">Take Survey</a>
+			<a type="button" href="test_results.php?id=<?php safer_echo($r['id']); ?>"> Results Page</a>
                     </div>
                 </div>
             <?php endforeach; ?>
