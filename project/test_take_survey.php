@@ -34,6 +34,7 @@ if (isset($_POST["submit"])) {
     $r = $stmt->execute($params);
     if ($r) {
         flash("Answers have been recorded", "success");
+        //$survey_id = $_GET["id"];
 	$db = getDB();
 	$stmt = $db->prepare("UPDATE Survey set total = (SELECT COUNT(distinct user_id) from Responses r where r.survey_id = :id) WHERE id = :id");
 	$r = $stmt->execute([":id" => $survey_id]);
@@ -41,7 +42,8 @@ if (isset($_POST["submit"])) {
     else {
         flash("There was an error recording your answers: " . var_export($stmt->errorInfo(), true), "danger");
     }
-    die(header("Location: " . getURL("home.php")));
+    die(header("Location: " . getURL("test_results.php?id=".$r["survey_id"])));
+   // die(header("Location: test_results.php .?
 }
 ?>
 
