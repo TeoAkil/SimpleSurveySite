@@ -14,7 +14,7 @@ if (isset($_GET["id"]))
     $sid = $_GET["id"];
 //
     $db = getDB();
-    $stmt = $db->prepare("SELECT q.id as QuestionId,a.id as AnswerId,s.title as SurveyTitle,s.description SurveyDescription,q.question as QuestionText,a.answer as AnswerText,(SELECT count(distinct user_id) from Responses where answer_id = a.id) as Total FROM Questions q JOIN Survey s on q.id = s.id JOIN Answers a on q.id = a.question_id WHERE q.survey_id = :id group by q.id,a.id");
+    $stmt = $db->prepare("SELECT q.id as QuestionId,a.id as AnswerId,s.title as SurveyTitle,s.description SurveyDescription,q.question as QuestionText,a.answer as AnswerText,(SELECT count(distinct user_id) from Responses where answer_id = a.id) as Total FROM Questions q JOIN Survey s on s.id = q.survey_id JOIN Answers a on q.id = a.question_id WHERE q.survey_id = :id group by q.id,a.id");
     $r = $stmt->execute([":id" => $sid]);
     $questions = [];
     if ($r) 
