@@ -1,6 +1,6 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
-if (!has_role("Admin")) {
+if (!is_logged_in()) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
     flash("You don't have permission to access this page");
     die(header("Location: login.php"));
@@ -28,7 +28,7 @@ if (isset($id)) {
 ?>
 <?php
 $userid = get_user_id();
-if (($userid != $result["user_id"]) && ($result["visibility"] == 0)) {
+if (($userid != $result["user_id"]) && ($result["visibility"] == 0) && (!has_role("Admin"))) {
     //this will redirect to home and kill the rest of this script (prevent it from executing)
     flash("You don't have permission to access this page, it is a different users survey draft");
     die(header("Location: home.php"));
