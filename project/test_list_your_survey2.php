@@ -61,6 +61,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add Question</a>
 			<a type="button" href="test_list_questions.php?id=<?php safer_echo($r['id']); ?>">View/Edit Questions</a>
 			<a type="button" href="test_results.php?id=<?php safer_echo($r['id']); ?>">Results Page </a>
+			<a type="button" href="test_view_profile.php?id=<?php safer_echo($r['user_id']); ?>">View Profile </a>
                     </div>
                 </div>
             </div>
