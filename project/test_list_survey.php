@@ -1,6 +1,6 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
-if (!has_role("Admin")) {
+if (!is_logged_in()) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
     flash("You don't have permission to access this page");
     die(header("Location: login.php"));
@@ -80,6 +80,7 @@ else
 			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add A Question</a>
 			<a type="button" href="test_take_survey.php?id=<?php safer_echo($r['id']); ?>">Take Survey</a>
 			<a type="button" href="test_results.php?id=<?php safer_echo($r['id']); ?>"> Results Page</a>
+			<a type="button" href="test_view_profile.php?id=<?php safer_echo($r['user_id']); ?>"> Profile Page<a>
                     </div>
                 </div>
             <?php endforeach; ?>
