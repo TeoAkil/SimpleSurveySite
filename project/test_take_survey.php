@@ -42,7 +42,8 @@ if (isset($_POST["submit"])) {
     else {
         flash("There was an error recording your answers: " . var_export($stmt->errorInfo(), true), "danger");
     }
-    die(header("Location: " . getURL("test_results.php?id=".$r["survey_id"])));
+
+    die(header("Location: test_view_taken_surveys2.php"));
    // die(header("Location: test_results.php .?
 }
 ?>
@@ -52,7 +53,7 @@ if (isset($_POST["submit"])) {
 if (isset($_GET["id"])) {
     $sid = $_GET["id"];
     $db = getDB();
-    $stmt = $db->prepare("SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId, s.title as SurveyName, s.visibility as Visibility, a.id as AnswerId, a.answer FROM Survey as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id WHERE :id not in (SELECT user_id from Responses where user_id = :id and survey_id = :survey_id) and s.id = :survey_id");
+    $stmt = $db->prepare("SELECT q.id as GroupId, q.id as QuestionId, q.question, s.id as SurveyId,s.user_id as SurveyOwner, s.title as SurveyName, s.visibility as Visibility, a.id as AnswerId, a.answer FROM Survey as s JOIN Questions as q on s.id = q.survey_id JOIN Answers as a on a.question_id = q.id WHERE :id not in (SELECT user_id from Responses where user_id = :id and survey_id = :survey_id) and s.id = :survey_id");
     $r = $stmt->execute([":id" => get_user_id(), ":survey_id" => $sid]);
     $name = "";
     $questions = [];
