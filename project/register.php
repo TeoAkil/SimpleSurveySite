@@ -6,6 +6,7 @@ if (isset($_POST["register"])) {
     $password = null;
     $confirm = null;
     $username = null;
+    $pubchoice = null;
     if (isset($_POST["email"])) {
         $email = $_POST["email"];
     }
@@ -18,6 +19,9 @@ if (isset($_POST["register"])) {
     if (isset($_POST["username"])) {
         $username = $_POST["username"];
     }
+    if (isset($_POST["pubchoice"])) {
+	$pubchoice = $_POST["pubchoice"];
+    }
     $isValid = true;
     //check if passwords match on the server side
     if ($password == $confirm) {
@@ -28,7 +32,7 @@ if (isset($_POST["register"])) {
         flash("Passwords don't match");
         $isValid = false;
     }
-    if (!isset($email) || !isset($password) || !isset($confirm)) {
+    if (!isset($email) || !isset($password) || !isset($confirm) || !isset($username) || !isset($pubchoice)) {
         $isValid = false;
     }
     //TODO other validation as desired, remember this is the last line of defense
@@ -38,9 +42,9 @@ if (isset($_POST["register"])) {
         $db = getDB();
         if (isset($db)) {
             //here we'll use placeholders to let PDO map and sanitize our data
-            $stmt = $db->prepare("INSERT INTO Users(email, username, password) VALUES(:email,:username, :password)");
+            $stmt = $db->prepare("INSERT INTO Users(email, username, password, pubchoice) VALUES(:email,:username, :password, :pubchoice)");
             //here's the data map for the parameter to data
-            $params = array(":email" => $email, ":username" => $username, ":password" => $hash);
+            $params = array(":email" => $email, ":username" => $username, ":password" => $hash, ":pubchoice" => $pubchoice);
             $r = $stmt->execute($params);
             $e = $stmt->errorInfo();
             if ($e[0] == "00000") {
@@ -73,6 +77,11 @@ if (!isset($username)) {
         <input type="email" id="email" name="email" required value="<?php safer_echo($email); ?>"/>
         <label for="user">Username:</label>
         <input type="text" id="user" name="username" required maxlength="60" value="<?php safer_echo($username); ?>"/>
+        <label>Publicity</label>
+	<select name="pubchoice">
+		<option value="0">Private</option>
+		<option value="1">Public</option>
+	</select>
         <label for="p1">Password:</label>
         <input type="password" id="p1" name="password" required/>
         <label for="p2">Confirm Password:</label>
