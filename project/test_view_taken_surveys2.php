@@ -58,8 +58,11 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	      	    <div>
                         <a type="button" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit Survey Info</a>
                         <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View Survey Info</a>
+			<?php if (has_role("Admin")): ?>
 			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add Question</a>
 			<a type="button" href="test_list_questions.php?id=<?php safer_echo($r['id']); ?>">View/Edit Questions</a>
+			<?php else: ?>
+			<?php endif; ?>
 			<a type="button" href="test_results.php?id=<?php safer_echo($r['id']); ?>">Results Page </a>
 			<a type="button" href="test_view_profile.php?id=<?php safer_echo($r['user_id']); ?>"> View Profile </a>
                     </div>
@@ -79,15 +82,21 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
         <nav aria-label="Taken Surveys">
             <ul class="pagination justify-content-center">
+		<?php if ($page != 1): ?>
                 <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
                     <a class="page-link" href="?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
                 </li>
+		<?php else: ?>
+		<?php endif; ?>
                 <?php for($i = 0; $i < $total_pages; $i++):?>
                 <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
                 <?php endfor; ?>
+		<?php if ($page != $totalpages): ?>
                 <li class="page-item <?php echo ($page) >= $total_pages?"disabled":"";?>">
                     <a class="page-link" href="?page=<?php echo $page+1;?>">Next</a>
                 </li>
+		<?php else: ?>
+		<?php endif; ?>
             </ul>
         </nav>
     </div>

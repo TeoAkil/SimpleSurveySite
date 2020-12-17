@@ -77,10 +77,13 @@ else
                     <div>
                         <a type="button" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
                         <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View</a>
+			<?php if (has_role("Admin")): ?>
 			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add A Question</a>
+			<?php else: ?>
+			<?php endif; ?>
 			<a type="button" href="test_take_survey.php?id=<?php safer_echo($r['id']); ?>">Take Survey</a>
 			<a type="button" href="test_results.php?id=<?php safer_echo($r['id']); ?>"> Results Page</a>
-			<a type="button" href="test_view_profile.php?id=<?php safer_echo($r['user_id']); ?>"> Profile Page<a>
+			<a type="button" href="test_view_profile.php?id=<?php safer_echo($r['user_id']); ?>"> View Profile<a>
                     </div>
                 </div>
             <?php endforeach; ?>
