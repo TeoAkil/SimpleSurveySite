@@ -5,13 +5,12 @@ if (isset($_GET["id"])) {
     $id = $_GET["id"];
 }
 ?>
-//
 <?php
 //fetching
 $result = [];
 if (isset($id)) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT s.id,title,description,visibility,s.created,modified,total,user_id,u.username,u.pubchoice,u.email FROM Users as u JOIN Survey s on u.id = s.user_id where u.id = :id");
+    $stmt = $db->prepare("SELECT u.id,u.username,u.pubchoice,u.email FROM Users u where u.id = :id");
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
