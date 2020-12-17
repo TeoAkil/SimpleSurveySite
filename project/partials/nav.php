@@ -5,6 +5,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
 ?>
 <?php
 	$userid = get_user_id();
+//
 ?>
 <nav>
 <ul class="nav">
