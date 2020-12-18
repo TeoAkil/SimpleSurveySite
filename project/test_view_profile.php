@@ -14,8 +14,8 @@ if (isset($id)) {
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$result) {
-        $e = $stmt->errorInfo();
-        flash($e[2]);
+       // $e = $stmt->errorInfo();
+       // flash($e[2]);
     }
 }
 ?>
@@ -175,8 +175,11 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	      	    <div>
                         <a type="button" href="test_edit_survey.php?id=<?php safer_echo($r['id']); ?>">Edit Survey Info</a>
                         <a type="button" href="test_view_survey.php?id=<?php safer_echo($r['id']); ?>">View Survey Info</a>
+			<?php if (has_role("Admin")): ?>
 			<a type="button" href="test_create_questions.php?id=<?php safer_echo($r['id']); ?>">Add Question</a>
 			<a type="button" href="test_list_questions.php?id=<?php safer_echo($r['id']); ?>">View/Edit Questions</a>
+			<?php else: ?>
+			<?php endif; ?>
 			<a type="button" href="test_results.php?id=<?php safer_echo($r['id']); ?>">Results Page </a>
 			<a type="button" href="test_view_profile.php?id=<?php safer_echo($r['user_id']); ?>"> View Profile </a>
                     </div>

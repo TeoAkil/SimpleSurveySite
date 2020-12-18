@@ -91,7 +91,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php for($i = 0; $i < $total_pages; $i++):?>
                 <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
                 <?php endfor; ?>
-		<?php if ($page != $totalpages): ?>
+		<?php if ($page != $total_pages): ?>
                 <li class="page-item <?php echo ($page) >= $total_pages?"disabled":"";?>">
                     <a class="page-link" href="?page=<?php echo $page+1;?>">Next</a>
                 </li>

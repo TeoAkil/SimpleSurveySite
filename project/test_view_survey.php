@@ -44,8 +44,8 @@ if (($userid != $result["user_id"]) && ($result["visibility"] == 0) && (!has_rol
                 <p>Stats</p>
                 <div>Description: <?php safer_echo($result["description"]); ?></div>
                 <div>Visibility: <?php getState($result["visibility"]); ?></div>
-               // <div>Created: <?php safer_echo($result["created"]); ?></div>
-               // <div>Modified: <?php safer_echo($result["modified"]); ?> </div>
+                <div>Created: <?php safer_echo($result["created"]); ?></div>
+                <div>Modified: <?php safer_echo($result["modified"]); ?> </div>
 		<div>Times Taken: <?php safer_echo($result["total"]); ?> </div>
                 <div>Owned by: <?php safer_echo($result["username"]); ?></div>
             </div>
