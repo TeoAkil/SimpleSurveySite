@@ -40,6 +40,7 @@ if(isset($_POST["save"])){
 	]);
 	if($r){
 		flash("Created successfully with id: " . $db->lastInsertId());
+		die(header("Location: test_list_your_survey2.php"));
 	}
 	else{
 		$e = $stmt->errorInfo();
