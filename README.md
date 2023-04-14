@@ -1,6 +1,6 @@
 # IT202
 ## Teoman Akil
 
-This is me creating/working on my already existing README file as part 1 of the homework
+This is the github repository used for most of the classwork I did in IT202, however most of it is contributions to the Simple Survey website I did as a semester-long project
 
-This message was to show that I am testing pulling from Git
+T
